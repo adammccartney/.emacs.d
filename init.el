@@ -445,4 +445,6 @@
   :init 
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 
+(use-package org 
+  :init)
 (provide 'init) ; make (require 'init) happy

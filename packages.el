@@ -35,7 +35,9 @@
  ("rainbow-delimiters" "https://github.com/Fanael/rainbow-delimiters"
   "93cd2dc873e7fedca7abc599cd97d46db4376ac7") ; 2.1.3
  ("slime" "https://github.com/slime/slime"
-  "cf30941e5858e93eb91574ad91499075222a447b")) ; 2.27
+  "cf30941e5858e93eb91574ad91499075222a447b") ; 2.27
+ ("org" "https://git.savannah.gnu.org/git/emacs/org-mode.git"
+  "767a4ad31f0ced1839f10b6943ddda1713b44a27")) ; 9.5.3
 
 ;; Set up some extra load-path directories
 (add-to-list 'load-path (gpkg-path "evil" "lib"))
