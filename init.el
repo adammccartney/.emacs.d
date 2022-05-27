@@ -19,6 +19,9 @@
 (add-to-list 'load-path
              (format "~/.emacs.d/site-lisp/%s/etc" emacs-version))
 
+
+
+
 ;; Package bootstrap
 (load-file "~/.emacs.d/packages.el")
 (require 'autoloads)
@@ -90,19 +93,6 @@
             ("\\(\\.ods\\|\\.xlsx?\\|\\.docx?\\|\\.csv\\)\\'" "libreoffice")
             ("\\(\\.png\\|\\.jpe?g\\)\\'" "qiv")
             ("\\.gif\\'" "animate")))))
-
-(use-package elfeed
-  :defer t
-  :bind ("C-x w" . elfeed)
-  :init (setf url-queue-timeout 30)
-  :config
-  (require 'feed-setup)
-  (push "-k" elfeed-curl-extra-arguments)
-  (setf bookmark-default-file (locate-user-emacs-file "local/bookmarks")))
-
-(use-package youtube-dl
-  :defer t
-  :bind ("C-x y" . youtube-dl-list))
 
 (use-package lisp-mode
   :defer t
@@ -426,21 +416,6 @@
                     "C-x t" 'test
                     "C-x C" 'clean))))
 
-(use-package jekyll
-  :demand t
-  :functions httpd-send-header
-  :config
-  (progn
-    (setf jekyll-home "~/src/skeeto.github.com/")
-    (when (file-exists-p jekyll-home)
-      (require 'simple-httpd)
-      (setf httpd-root (concat jekyll-home "_site"))
-      (ignore-errors
-        (httpd-start)
-        (jekyll/start))
-      (defservlet robots.txt text/plain ()
-        (insert "User-agent: *\nDisallow: /\n")))))
-
 (use-package help-mode
   :defer t
   :config
@@ -465,5 +440,9 @@
   :defer t
   :config
   (define-key enriched-mode-map "\C-m" nil))
+
+(use-package slime
+  :init 
+  (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 
 (provide 'init) ; make (require 'init) happy

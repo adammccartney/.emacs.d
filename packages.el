@@ -3,11 +3,6 @@
 (gpkg-config
  ("use-package" "https://github.com/jwiegley/use-package"
   "39a8b8812c2c9f6f0b299e6a04e504ef393694ce") ; 2.4
- ("elfeed" "https://github.com/skeeto/elfeed"
-  "2409681433e97cd4ee63dfa10f48b2be64d4321d"  ; 3.3.0-19-g2409681
-  :removal '("^web$"))
- ("youtube-dl" "https://github.com/skeeto/youtube-dl-emacs"
-  "af877b5bc4f01c04fccfa7d47a2c328926f20ef4") ; 2018-10-12T15:08:06Z
  ("evil" "https://github.com/emacs-evil/evil"
   "3766a521a60e6fb0073220199425de478de759ad"  ; 1.2.14
   :removal '("evil-tests.el" "^ert.el"))
@@ -39,8 +34,8 @@
   "609b2ba70dc5a246ac9b4b5f89eb5ef4331519bf") ; 1.2.0
  ("rainbow-delimiters" "https://github.com/Fanael/rainbow-delimiters"
   "93cd2dc873e7fedca7abc599cd97d46db4376ac7") ; 2.1.3
- ("javadoc-lookup" "https://github.com/skeeto/javadoc-lookup"
-  "507a2dd443d60b537b8f779c1847e2cd0ccd1382")); 1.1.0
+ ("slime" "https://github.com/slime/slime"
+  "cf30941e5858e93eb91574ad91499075222a447b")) ; 2.27
 
 ;; Set up some extra load-path directories
 (add-to-list 'load-path (gpkg-path "evil" "lib"))
