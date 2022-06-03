@@ -446,5 +446,7 @@
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 
 (use-package org 
-  :init)
+  :init
+  (setq org-startup-folded "showall"))
+
 (provide 'init) ; make (require 'init) happy
