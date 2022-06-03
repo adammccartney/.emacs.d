@@ -32,6 +32,7 @@
 (require 'unannoy)
 (require 'extras)
 (require 'ctags)
+(require 'smtpmail)
 
 ;; Some global keybindings
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
@@ -471,6 +472,9 @@
               :vars '(
                       (user-full-name . "Adam McCartney")
                       (user-mail-address . "adam@mur.at")
+                      (smtpmail-smtp-server . "smtp.mur.at")
+                      (smtpmail-smtp-service . 465)
+                      (smtpmail-stream-type . starttls)
                       (mu4e-sent-folder . "/murat/Sent")
                       (mu4e-trash-folder . "/murat/Trash")
                       (mu4e-drafts-folder . "/murat/Drafts")
@@ -487,6 +491,9 @@
               :vars '(
                       (user-full-name . "Adam McCartney")
                       (user-mail-address . "mccartney@mdw.ac.at")
+                      (smtpmail-smtp-server . "mail.mdw.ac.at")
+                      (smtpmail-smtp-service . 465)
+                      (smtpmail-stream-type . ssl)
                       (mu4e-send-folder . "/mdw/Sent Items")
                       (mu4e-trash-folder . "/mdw/Trash")
                       (mu4e-drafts-folder . "/mdw/Work In Progress")
@@ -528,11 +535,7 @@
   (setq mu4e-compose-dont-reply-to-self t)
 
   ;; Use mu4e for sending e-mail
-  (setq sendmail-program "/usr/bin/msmtp"
-        message-sendmail-f-is-evil t
-        message-sendmail-extra-arguments '("--read-envelope-from")
-        send-mail-function 'smtp-send-it
-        message-send-mail-function 'message-send-mail-with-sendmail)
+  (setq message-send-mail-function 'smtpmail-send-it)
 
   (add-to-list 'mu4e-bookmarks
                (make-mu4e-bookmark
@@ -548,3 +551,4 @@
 
 
 (provide 'init) ; make (require 'init) happy
+
