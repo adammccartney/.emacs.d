@@ -471,12 +471,35 @@
               :vars '(
                       (user-full-name . "Adam McCartney")
                       (user-mail-address . "adam@mur.at")
-                      (mu4e-sent-folder . "/Sent")
-                      (mu4e-trash-folder . "/Trash")
-                      (mu4e-drafts-folder . "/Drafts")
-                      (mu4e-refile-folder . "/Archive")
+                      (mu4e-sent-folder . "/murat/Sent")
+                      (mu4e-trash-folder . "/murat/Trash")
+                      (mu4e-drafts-folder . "/murat/Drafts")
+                      (mu4e-refile-folder . "/murat/Archive")
                       (mu4e-sent-messages-behavior . sent)
-                      ))
+                      (mu4e-compose-signature .
+                                              (concat
+                                                "Adam McCartney\n"
+                                                "Markhofgasse 11-17/2/6 1030 Vienna\n"))))
+            ,(make-mu4e-context
+              :name "work-mdw"
+              :match-func (lambda (msg) (when msg
+                                          (string-prefix-p "/mdw" (mu4e-message-field msg :maildir))))
+              :vars '(
+                      (user-full-name . "Adam McCartney")
+                      (user-mail-address . "mccartney@mdw.ac.at")
+                      (mu4e-send-folder . "/mdw/Sent Items")
+                      (mu4e-trash-folder . "/mdw/Trash")
+                      (mu4e-drafts-folder . "/mdw/Work In Progress")
+                      (mu4e-refile-folder . "/mdw/Cabinet")
+                      (mu4e-sent-message-behavior . sent)
+                      (mu4e-compose-signature .
+                                              (concat
+                                                "Adam McCartney\n"
+                                                "Software Developer\n\n"
+                                                "Zentraler Informatik Dienst (ZID)\n"
+                                                "mdw - Universitaet fuer Musik und darstellende Kunst Wien\n\n"
+                                                "Anton-von-Webern-Platz 1, 1030 Wien\n"
+                                                "+43 1 71155 7333\n"))))
           ))
   (setq mu4e-context-policy 'pick-first)
   ;; Prevent mu4e from permanently deleting trashed items
@@ -505,20 +528,11 @@
   (setq mu4e-compose-dont-reply-to-self t)
 
   ;; Use mu4e for sending e-mail
-  (setq mail-user-agent 'mu4e-user-agent
-        message-send-mail-function 'smtpmail-send-it
-        smtpmail-smtp-server "smtp.mur.at"
-        smtpmail-smtp-service 587)
-
-;; setup some handy shortcuts
-  ;; you can quickly switch to your Inbox -- press ``ji''
-  ;; then, when you want archive some messages, move them to
-  ;; the 'All Mail' folder by pressing ``ma''.
-  (setq mu4e-maildir-shortcuts
-        '(("/Inbox"  . ?i)
-          ("/Drafts" . ?l)
-          ("/Sent"   . ?s)
-          ("/Trash"  . ?t)))
+  (setq sendmail-program "/usr/bin/msmtp"
+        message-sendmail-f-is-evil t
+        message-sendmail-extra-arguments '("--read-envelope-from")
+        send-mail-function 'smtp-send-it
+        message-send-mail-function 'message-send-mail-with-sendmail)
 
   (add-to-list 'mu4e-bookmarks
                (make-mu4e-bookmark
