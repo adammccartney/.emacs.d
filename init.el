@@ -453,6 +453,9 @@
 (use-package mu4e
   :defer 20
   :config
+  
+  ;; automatically add a gpg signature to every email (signed as adam@mur.at) 
+  (add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
 
   ;; Refresh mail using isync every 10 minutes
   (setq mu4e-update-interval (* 10 60))
@@ -482,7 +485,7 @@
                       (mu4e-sent-messages-behavior . sent)
                       (mu4e-compose-signature .
                                               (concat
-                                                "Adam McCartney\n"
+                                                "Adam McCartney | https://admccartney.mur.at \n"
                                                 "Markhofgasse 11-17/2/6 1030 Vienna\n"))))
             ,(make-mu4e-context
               :name "work-mdw"
@@ -502,9 +505,9 @@
                       (mu4e-compose-signature .
                                               (concat
                                                 "Adam McCartney\n"
-                                                "Software Developer\n\n"
+                                                "Software Developer\n"
                                                 "Zentraler Informatik Dienst (ZID)\n"
-                                                "mdw - Universitaet fuer Musik und darstellende Kunst Wien\n\n"
+                                                "mdw - Universitaet fuer Musik und darstellende Kunst Wien\n"
                                                 "Anton-von-Webern-Platz 1, 1030 Wien\n"
                                                 "+43 1 71155 7333\n"))))
           ))
@@ -545,6 +548,12 @@
 
   ;; don't keep message buffers around
   (setq message-kill-buffer-on-exit t)
+
+  ;; allow for flowed formatting
+  (setq mu4e-compose-format-flowed t)
+
+  ;; Use a specific key for signing by referencing its thumbprint
+  (setq mml-secure-openpgp-signers '("C5BF27EE0290CDE5BC8A8801A5FCE0B0A42EFDA8"))
 
   ;; Start mu4e in the background so that it syncs mail periodically
   (mu4e t))
