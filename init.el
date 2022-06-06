@@ -20,6 +20,22 @@
              (format "~/.emacs.d/site-lisp/%s/etc" emacs-version))
 
 
+(add-to-list 'load-path 
+             (format "~/.emacs.d/site-lisp/%s/dash" emacs-version))
+(add-to-list 'load-path 
+             (format "~/.emacs.d/site-lisp/%s/transient/lisp" emacs-version))
+(add-to-list 'load-path 
+             (format "~/.emacs.d/site-lisp/%s/with-editor" emacs-version))
+(add-to-list 'load-path 
+             (format "~/.emacs.d/site-list/%s/magit/lisp" emacs-version))
+;(require 'magit)
+
+(with-eval-after-load 'info
+  (info-initialize)
+  (add-to-list 'Info-directory-list
+               (format "~/.emacs.d/site-lisp/%s/magit/Documentation/" emacs-version)))
+
+
 ;; Package bootstrap
 (load-file "~/.emacs.d/packages.el")
 (require 'autoloads)
@@ -486,6 +502,7 @@
   :config (counsel-projectile-mode))
 
 (use-package magit
+  :ensure t
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
