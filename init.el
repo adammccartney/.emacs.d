@@ -559,5 +559,38 @@
   (mu4e t))
 
 
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (ivy-mode 1))
+
+ (use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :custom ((projectile-completion-system 'ivy))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  ;; NOTE: Set this to the folder where you keep your Git repos!
+  (when (file-directory-p "~/.local/src")
+    (setq projectile-project-search-path '("~/.local/src")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
+
+
+
 (provide 'init) ; make (require 'init) happy
 

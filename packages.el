@@ -37,7 +37,11 @@
  ("slime" "https://github.com/slime/slime"
   "cf30941e5858e93eb91574ad91499075222a447b") ; 2.27
  ("org" "https://git.savannah.gnu.org/git/emacs/org-mode.git"
-  "767a4ad31f0ced1839f10b6943ddda1713b44a27")) ; 9.5.3
+  "767a4ad31f0ced1839f10b6943ddda1713b44a27") ; 9.5.3
+("projectile" "https://github.com/bbatsov/projectile.git"
+ "a2a1aba8aa12d0ff0e044c4336a5c2598c259720") ; 2.5.0
+("ivy" "https://github.com/abo-abo/swiper.git"
+ "cd634c6f51458f81898ecf2821ac3169cb65a1eb")) ; 0.13.0
 
 ;; Set up some extra load-path directories
 (add-to-list 'load-path (gpkg-path "evil" "lib"))
