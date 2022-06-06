@@ -31,14 +31,5 @@
   "cd634c6f51458f81898ecf2821ac3169cb65a1eb") ; 0.13.0
  ("counsel-projectile" "https://github.com/ericdanan/counsel-projectile.git"
   "e30150792a96968f55f34638cbfe63eaa30839cc")) ; 0.3.2
- ;;("dash" "https://github.com/magnars/dash.el.git"
- ;; "39d067b9fbb2db65fc7a6938bfb21489ad990cb4") ; 2.19.1
- ;;("transient" "https://github.com/magit/transient.git"
- ;; "74cba5a418ff1b1661494fc2970c330ecdbb4b22") ; 0.3.7
- ;;("with-editor" "https://github.com/magit/with-editor.git"
- ;; "5519b6a67ecd66865b4fdd5447425eee900c54f4") ; 3.0.4
- ;;("magit" "https://github.com/magit/magit.git"
- ;; "f44f6c14500476d918e9c01de8449edb20af4113")) ; 3.3.0
-
 ;; Set up some extra load-path directories
 (add-to-list 'load-path (gpkg-path "evil" "lib"))
