@@ -20,8 +20,6 @@
              (format "~/.emacs.d/site-lisp/%s/etc" emacs-version))
 
 
-
-
 ;; Package bootstrap
 (load-file "~/.emacs.d/packages.el")
 (require 'autoloads)
@@ -30,12 +28,18 @@
 
 ;; "Local" packages
 (require 'unannoy)
-(require 'extras)
 (require 'ctags)
 (require 'smtpmail)
 
+
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
+
 ;; Some global keybindings
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
+(column-number-mode)
+(global-display-line-numbers-mode t)
 
 ;;; auto-mode-alist entries
 (add-to-list 'auto-mode-alist '("\\.mom$" . nroff-mode))
@@ -66,22 +70,13 @@
 (add-hook 'after-make-frame-functions #'my-set-preferred-font)
 (add-hook 'after-make-frame-functions #'my-set-frame-fullscreen t)
 
+
 ;;; Individual package configurations
 
 (use-package dabbrev
   :defer t
   :init (setf abbrev-file-name (locate-user-emacs-file "local/abbrev_defs"))
   :config (setf dabbrev-case-fold-search nil))
-
-(use-package impatient-mode
-  :defer t
-  :config
-  (defun imp-markdown-filter (in)
-    (let ((out (current-buffer)))
-      (with-current-buffer in
-        (markdown out))))
-  (push (cons 'markdown-mode #'imp-markdown-filter)
-        imp-default-user-filters))
 
 (use-package dired
   :defer t
@@ -109,42 +104,28 @@
     (define-key emacs-lisp-mode-map (kbd "C-c C-z") #'ielm-repl)
     (defalias 'lisp-interaction-mode 'emacs-lisp-mode)))
 
-(use-package undo-tree
-  :init
-  (setf undo-tree-mode-lighter ""))
-
 (use-package evil
   :init
-  (setf evil-want-C-u-scroll t)
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
   :config
-  (evil-mode)
-  (defvar my-leader-map
-    (let ((map (make-sparse-keymap)))
-      (prog1 map
-        (define-key map "w" 'elfeed))))
-  (define-key evil-normal-state-map "\\" my-leader-map)
-  (define-key evil-normal-state-map (kbd "M-.") #'ctags-find)
-  (define-key evil-normal-state-map (kbd "M-?") #'ctags-find-reference)
-  (add-to-list 'evil-emacs-state-modes 'elfeed-search-mode)
-  (add-to-list 'evil-emacs-state-modes 'elfeed-show-mode)
-  (add-to-list 'evil-emacs-state-modes 'special-mode)
-  (add-to-list 'evil-emacs-state-modes 'youtube-dl-list-mode)
-  (add-to-list 'evil-emacs-state-modes 'process-menu-mode)
-  (evil-select-search-module 'evil-search-module 'evil-search)
-  (setf evil-ex-search-highlight-all nil)
-  (add-hook 'with-editor-mode-hook 'evil-insert-state)
-  (add-hook 'emacs-lisp-mode-hook (lambda () (modify-syntax-entry ?- "w")))
-  (add-hook 'c-mode-common-hook (lambda () (modify-syntax-entry ?_ "w"))))
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
-(use-package evil-smartparens
-  :defer t
-  :init
-  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
-  (add-hook 'emacs-lisp-mode-hook #'smartparens-strict-mode)
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))
+
+(use-package evil-collection
+  :after evil
   :config
-  (sp-local-pair '(emacs-lisp-mode) "'" "'" :actions nil)
-  (sp-local-pair '(emacs-lisp-mode) "`" "`" :actions nil)
-  (sp-use-paredit-bindings))
+  (evil-collection-init))
 
 (use-package time
   :config
@@ -184,14 +165,6 @@
   (custom-set-faces
    '(cursor ((t :background "#eebb28")))))
 
-(use-package simple
-  :defer t
-  :config
-  (progn
-    ;; disable so I don't use it by accident
-    (define-key visual-line-mode-map (kbd "M-q") (expose (lambda ())))
-    (add-hook 'tabulated-list-mode-hook #'hl-line-mode)))
-
 (use-package uniquify
   :defer t
   :config
@@ -216,13 +189,6 @@
             (lambda ()
               (define-key eshell-mode-map (kbd "<f1>") #'quit-window))))
 
-(use-package gitconfig-mode
-  :defer t
-  :config (add-hook 'gitconfig-mode-hook
-                    (lambda ()
-                      (setf indent-tabs-mode nil
-                            tab-width 4))))
-
 (use-package markdown-mode
   :defer t
   :mode ("\\.md$" "\\.markdown$" "vimperator-.+\\.tmp$")
@@ -241,41 +207,6 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
   (setf octave-block-offset 4))
-
-(use-package simple-httpd
-  :defer t
-  :functions httpd-send-header
-  :config
-  (defservlet uptime "text/plain" ()
-    (princ (emacs-uptime)))
-  (defun httpd-here ()
-    (interactive)
-    (setf httpd-root default-directory))
-  (defadvice httpd-start (after httpd-query-on-exit-flag activate)
-    (let ((httpd-process (get-process "httpd")))
-      (when httpd-process
-        (set-process-query-on-exit-flag httpd-process nil))))
-  (setf httpd-host "0.0.0.0"))
-
-(use-package js2-mode
-  :defer t
-  :mode "\\.js$"
-  :config
-  (add-hook 'js2-mode-hook (lambda () (setq mode-name "js2")))
-  (setf js2-skip-preprocessor-directives t)
-  (setq-default js2-additional-externs
-                '("$" "unsafeWindow" "localStorage" "jQuery"
-                  "setTimeout" "setInterval" "location" "skewer"
-                  "console" "phantom")))
-
-(use-package skewer-mode
-  :defer t
-  :init
-  (skewer-setup))
-
-(use-package skewer-repl
-  :defer t
-  :config (define-key skewer-repl-mode-map (kbd "C-c C-z") #'quit-window))
 
 (use-package ps-print
   :defer t
@@ -352,34 +283,6 @@
                       :inherit 'error)
   (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4"))
 
-(use-package icomplete
-  :init
-  (icomplete-mode)
-  :bind (:map icomplete-minibuffer-map
-              ("<C-tab>" . minibuffer-force-complete)))
-
-(use-package etags
-  :defer t
-  :config
-  (defun etags-build (directory)
-    (interactive "DDirectory: ")
-    (let* ((results ())
-           (head (list directory))
-           (tail head))
-      (while head
-        (dolist (file (directory-files (car head) t nil t))
-          (cond ((and (not (string-match "\\.$" file))
-                      (not (string-match "\\.\\.$" file))
-                      (file-directory-p file))
-                 (let ((new-tail (list file)))
-                   (setf (cdr tail) new-tail
-                         tail new-tail)))
-                ((string-match "\\.[ch]$" file)
-                 (push file results))))
-        (pop head))
-      (let ((default-directory directory))
-        (apply #'call-process "etags" nil nil nil results)))))
-
 (use-package javadoc-lookup
   :defer t
   :bind ("C-h j" . javadoc-lookup)
@@ -399,23 +302,6 @@
   :demand t
   :bind ("C-x !" . uuid-insert)
   :config (random (make-uuid)))
-
-(use-package compile-bind
-  :demand t
-  :bind (("C-h g" . compile-bind-set-command)
-         ("C-h G" . compile-bind-set-root-file))
-  :config
-  (progn
-    (setf compilation-always-kill t
-          compilation-ask-about-save nil
-          compilation-scroll-output 'first-error
-          compile-bind-command (format "make -kj%d " (numcores)))
-    (when (executable-find "nmake.exe")
-      (compile-bind-set-command "nmake -nologo "))
-    (compile-bind* (current-global-map)
-                   ("C-x c" ""
-                    "C-x t" 'test
-                    "C-x C" 'clean))))
 
 (use-package help-mode
   :defer t
@@ -599,7 +485,8 @@
 (use-package counsel-projectile
   :config (counsel-projectile-mode))
 
-
+(use-package magit
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (provide 'init) ; make (require 'init) happy
-

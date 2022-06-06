@@ -2,32 +2,19 @@
 
 (gpkg-config
  ("use-package" "https://github.com/jwiegley/use-package"
-  "39a8b8812c2c9f6f0b299e6a04e504ef393694ce") ; 2.4
+  "caa92f1d64fc25480551757d854b4b49981dfa6b") ; 2.4.1
+ ("annalist" "https://github.com/noctuid/annalist.el"
+  "0da9812e419b1687cf1e7040384f983be32d5328") ; One Eye
  ("evil" "https://github.com/emacs-evil/evil"
-  "3766a521a60e6fb0073220199425de478de759ad"  ; 1.2.14
-  :removal '("evil-tests.el" "^ert.el"))
- ("evil-smartparens" "https://github.com/expez/evil-smartparens"
-  "9fe4eed1c6327197afe6c13bb0771e18908aff00"  ; 0.4.0
-  :removal '("^tests$"))
+  "162a94cbce4f2c09fa7dd6bd8ca56080cb0ab63b")  ; 1.14.2
+ ("evil-magit" "https://github.com/emacs-evil/evil-magit.git"
+  "a24186be7cc2cdab24b56f6dcc4665eeb8349c1a") ; v0.4.3
+ ("evil-collection" "https://github.com/emacs-evil/evil-collection"
+  "a63cb007bf15c3fd4c3322f29f85d18d5574f7ba") ; 0.0.8
  ("sanityinc" "https://github.com/purcell/color-theme-sanityinc-tomorrow"
   "81d8990085960824f700520d08027e6aca58feaa") ; 1.17
- ("simple-httpd" "https://github.com/skeeto/emacs-web-server"
-  "b191b07c942e44c946a22a826c4d9c9a0475fd7e") ; 1.5.1
- ("htmlize" "https://github.com/hniksic/emacs-htmlize"
-  "88e2cb6588827893d7bc619529393887c264d15a") ; release/1.53
- ("impatient-mode" "https://github.com/skeeto/impatient-mode"
-  "eba1efce3dd20b5f5017ab64bae0cfb3b181c2b0") ; 1.1
- ("dash" "https://github.com/magnars/dash.el"
-  "a74f4cfcdc8d0642a9f602ad494f0354f27dacc9"  ; 2.14.1
-  :removal '("^dev$"))
- ("smartparens" "https://github.com/Fuco1/smartparens"
-  "4873352b5d0a1c5142658122de1b6950b8fe7e4d") ; 1.11.0
  ("markdown-mode" "https://github.com/jrblevin/markdown-mode"
   "cde5c5d2bcce470c494b76e23cfe1364b6291c20") ; v2.3
- ("js2-mode" "https://github.com/mooz/js2-mode"
-  "ed955e7f1608cfd2d2713129d65f5fd734842ae4") ; 20190219
- ("skewer-mode" "https://github.com/skeeto/skewer-mode"
-  "a10955db9ef95b0243ee31bcd30a6fb07ce5302b") ; 1.8.0
  ("nasm-mode" "https://github.com/skeeto/nasm-mode"
   "d990ed94d902b74a5c834fb567e03307607cee45") ; 1.1.1
  ("x86-lookup" "https://github.com/skeeto/x86-lookup"
@@ -38,12 +25,20 @@
   "cf30941e5858e93eb91574ad91499075222a447b") ; 2.27
  ("org" "https://git.savannah.gnu.org/git/emacs/org-mode.git"
   "767a4ad31f0ced1839f10b6943ddda1713b44a27") ; 9.5.3
-("projectile" "https://github.com/bbatsov/projectile.git"
- "a2a1aba8aa12d0ff0e044c4336a5c2598c259720") ; 2.5.0
-("ivy" "https://github.com/abo-abo/swiper.git"
- "cd634c6f51458f81898ecf2821ac3169cb65a1eb") ; 0.13.0
-("counsel-projectile" "https://github.com/ericdanan/counsel-projectile.git"
- "e30150792a96968f55f34638cbfe63eaa30839cc")) ; 0.3.2
+ ("projectile" "https://github.com/bbatsov/projectile.git"
+  "a2a1aba8aa12d0ff0e044c4336a5c2598c259720") ; 2.5.0
+ ("ivy" "https://github.com/abo-abo/swiper.git"
+  "cd634c6f51458f81898ecf2821ac3169cb65a1eb") ; 0.13.0
+ ("counsel-projectile" "https://github.com/ericdanan/counsel-projectile.git"
+  "e30150792a96968f55f34638cbfe63eaa30839cc")) ; 0.3.2
+ ;;("dash" "https://github.com/magnars/dash.el.git"
+ ;; "39d067b9fbb2db65fc7a6938bfb21489ad990cb4") ; 2.19.1
+ ;;("transient" "https://github.com/magit/transient.git"
+ ;; "74cba5a418ff1b1661494fc2970c330ecdbb4b22") ; 0.3.7
+ ;;("with-editor" "https://github.com/magit/with-editor.git"
+ ;; "5519b6a67ecd66865b4fdd5447425eee900c54f4") ; 3.0.4
+ ;;("magit" "https://github.com/magit/magit.git"
+ ;; "f44f6c14500476d918e9c01de8449edb20af4113")) ; 3.3.0
 
 ;; Set up some extra load-path directories
 (add-to-list 'load-path (gpkg-path "evil" "lib"))
