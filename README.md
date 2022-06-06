@@ -1,9 +1,11 @@
-# My Personal Emacs Configuration
+# Borrowed and tinkered Emacs Configuration
 
-This is my personal Emacs configuration. This is the second repository
-I clone — after [my dotfiles][dot] — when settling in on a new system.
-This configuration uses [**Evil-style bindings**][vim] (i.e. Vim
-bindings), and **requires at least Emacs 24.4.**
+This is an emacs config. It started out life as a fork from [Chris
+Wellon's](https://nullprogram.com/blog/2011/10/19/) config. But has been
+subject to a bit of tinkering since then. The basic approach to building
+remains the same, the original is pretty solid in this respect. The content of
+the config has changed quite a bit, as my personal needs for emacs were a bit
+different.
 
 To install all third-party packages, run `make` in this repository
 while connected to the internet:
@@ -24,5 +26,3 @@ launch with no errors. You will be greeted with a featureless, empty
 gray box awaiting your instructions.
 
 
-[dot]: https://github.com/skeeto/dotfiles
-[vim]: http://nullprogram.com/blog/2017/04/01/
