@@ -596,6 +596,8 @@
     (setq projectile-project-search-path '("~/.local/src")))
   (setq projectile-switch-project-action #'projectile-dired))
 
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
 
 
 

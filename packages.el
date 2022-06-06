@@ -41,7 +41,9 @@
 ("projectile" "https://github.com/bbatsov/projectile.git"
  "a2a1aba8aa12d0ff0e044c4336a5c2598c259720") ; 2.5.0
 ("ivy" "https://github.com/abo-abo/swiper.git"
- "cd634c6f51458f81898ecf2821ac3169cb65a1eb")) ; 0.13.0
+ "cd634c6f51458f81898ecf2821ac3169cb65a1eb") ; 0.13.0
+("counsel-projectile" "https://github.com/ericdanan/counsel-projectile.git"
+ "e30150792a96968f55f34638cbfe63eaa30839cc")) ; 0.3.2
 
 ;; Set up some extra load-path directories
 (add-to-list 'load-path (gpkg-path "evil" "lib"))
