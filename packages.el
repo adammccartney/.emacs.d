@@ -38,7 +38,11 @@
  ("with-editor" "https://github.com/magit/with-editor.git"
   "5519b6a67ecd66865b4fdd5447425eee900c54f4") ; 3.0.4
  ("magit" "https://github.com/magit/magit.git"
-  "f44f6c14500476d918e9c01de8449edb20af4113")) ; 3.3.0
+  "f44f6c14500476d918e9c01de8449edb20af4113") ; 3.3.0
+ ("lsp-mode" "https://github.com/emacs-lsp/lsp-mode"
+  "5e0524cc9a4e21c4fe5b35153ad33e7b8a4f9117") ; 8.0.0
+ ("lsp-pyright" "https://github.com/emacs-lsp/lsp-pyright"
+  "3598bc7c47c2f2ff6fc94ca50b5a4e4db4c25f97")) ; 0.2.0
 
 ;; Set up some extra load-path directories
 (add-to-list 'load-path (gpkg-path "evil" "lib"))

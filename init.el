@@ -87,6 +87,9 @@
 (add-hook 'after-make-frame-functions #'my-set-frame-fullscreen t)
 
 
+;; Calendar and planner notification stuff
+(appt-activate t)
+
 ;;; Individual package configurations
 
 (use-package dabbrev
@@ -364,6 +367,15 @@
   (setq mu4e-get-mail-command "mbsync -a")
   (setq mu4e-maildir "~/.mail")
 
+  (setq mu4e-attachment-dir
+    (lambda (fname mtype)
+      (cond 
+        ;; docfiles go to ~/Documents
+        ((and fname (string-match "\\.doc$" fname)) "~/Documents")
+        ((and fname (string-match "\\.pdf$" fname)) "~/Documents")
+        (t "~/Downloads")))) ;; everything else
+
+
   ;; Make sure that moving a message (like to Trash) causes the
   ;; message to get a new file name.  This helps to avoid the
   ;; dreaded "UID is N beyond highest assigned" error.
@@ -397,7 +409,7 @@
                       (user-full-name . "Adam McCartney")
                       (user-mail-address . "mccartney@mdw.ac.at")
                       (smtpmail-smtp-server . "mail.mdw.ac.at")
-                      (smtpmail-smtp-service . 465)
+                      (smtpmail-smtp-service . 587)
                       (smtpmail-stream-type . ssl)
                       (mu4e-send-folder . "/mdw/Sent Items")
                       (mu4e-trash-folder . "/mdw/Trash")
@@ -494,8 +506,8 @@
   ("C-c p" . projectile-command-map)
   :init
   ;; NOTE: Set this to the folder where you keep your Git repos!
-  (when (file-directory-p "~/.local/src")
-    (setq projectile-project-search-path '("~/.local/src")))
+  ;;(when (file-directory-p "~/.local/src")
+    ;;(setq projectile-project-search-path '("~/.local/src")))
   (setq projectile-switch-project-action #'projectile-dired))
 
 (use-package counsel-projectile
@@ -505,5 +517,41 @@
   :ensure t
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (python-mode . lsp)
+         (c-mode . lsp)
+         (javascript-mode . lsp)
+         (typescript-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+;; optionally
+;;(use-package lsp-ui :commands lsp-ui-mode)
+;;;; if you are helm user
+;;(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+;;;; if you are ivy user
+;;(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+;;(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+;;
+;;;; optionally if you want to use debugger
+;;(use-package dap-mode)
+;;;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+;;
+;;;; optional if you want which-key integration
+;;(use-package which-key
+;;    :config
+;;    (which-key-mode))
+
+(use-package lsp-pyright
+  :ensure t 
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp)))) ;; or lsp-deferred
 
 (provide 'init) ; make (require 'init) happy
