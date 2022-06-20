@@ -28,7 +28,6 @@
              (format "~/.emacs.d/site-lisp/%s/with-editor" emacs-version))
 (add-to-list 'load-path 
              (format "~/.emacs.d/site-list/%s/magit/lisp" emacs-version))
-;(require 'magit)
 
 (with-eval-after-load 'info
   (info-initialize)
@@ -56,6 +55,9 @@
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
 (column-number-mode)
 (global-display-line-numbers-mode t)
+
+;; Global line width
+(setq-default fill-column 72)
 
 ;;; auto-mode-alist entries
 (add-to-list 'auto-mode-alist '("\\.mom$" . nroff-mode))
@@ -304,6 +306,11 @@
   :init 
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 
+
+;; Org mode
+(add-hook 'org-mode-hook '(lambda () (setq fill-column 72)))
+(add-hook 'org-mode-hook 'turn-on-auto-fill)
+
 (use-package org 
   :init
   (setq org-todo-keywords
@@ -312,10 +319,11 @@
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t)))
-  (setq org-startup-folded "showall"))
+  (setq org-startup-folded "overview"))
 
 (require 'org-tempo)
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("sql" . "src sql"))
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
 
