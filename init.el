@@ -154,24 +154,6 @@
           display-time-24hr-format t)
     (display-time-mode t)))
 
-(use-package comint
-  :defer t
-  :config
-  (progn
-    (define-key comint-mode-map (kbd "<down>") #'comint-next-input)
-    (define-key comint-mode-map (kbd "<up>") #'comint-previous-input)
-    (define-key comint-mode-map (kbd "C-n") #'comint-next-input)
-    (define-key comint-mode-map (kbd "C-p") #'comint-previous-input)
-    (define-key comint-mode-map (kbd "C-r") #'comint-history-isearch-backward)
-    (setf comint-prompt-read-only t
-          comint-history-isearch t)))
-
-(use-package tramp
-  :defer t
-  :config
-  (setf tramp-persistency-file-name
-        (concat temporary-file-directory "tramp-" (user-login-name))))
-
 (use-package diff-mode
   :defer t
   :config (add-hook 'diff-mode-hook #'read-only-mode))
@@ -226,16 +208,6 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
   (setf octave-block-offset 4))
-
-(use-package ps-print
-  :defer t
-  :config (setf ps-print-header nil))
-
-(use-package erc
-  :defer t
-  :config
-  (when (eq 0 (string-match "wello" (user-login-name)))
-    (setf erc-nick "skeeto")))
 
 (use-package cc-mode
   :defer t
@@ -302,6 +274,7 @@
                       :inherit 'error)
   (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4"))
 
+
 (use-package javadoc-lookup
   :defer t
   :bind ("C-h j" . javadoc-lookup)
@@ -327,32 +300,14 @@
   :config
   (define-key help-mode-map (kbd "f") #'push-first-button))
 
-(use-package gamegrid
-  :defer t
-  :init
-  (setf gamegrid-user-score-file-directory (locate-user-emacs-file "games")))
-
-(use-package ospl-mode
-  :defer t
-  :init
-  (autoload 'ospl-mode "ospl-mode"))
-
-(use-package sql
-  :defer t
-  :init
-  (setf sql-product 'sqlite))
-
-(use-package enriched
-  :defer t
-  :config
-  (define-key enriched-mode-map "\C-m" nil))
-
 (use-package slime
   :init 
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 
 (use-package org 
   :init
+  (setq org-todo-keywords
+        '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
   (setq org-startup-folded "showall"))
 
 (use-package mu4e
@@ -518,40 +473,50 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
+(defun efs/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
+
 (use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . efs/lsp-mode-setup)
   :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (python-mode . lsp)
-         (c-mode . lsp)
-         (javascript-mode . lsp)
-         (typescript-mode . lsp)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
 
-;; optionally
-;;(use-package lsp-ui :commands lsp-ui-mode)
-;;;; if you are helm user
-;;(use-package helm-lsp :commands helm-lsp-workspace-symbol)
-;;;; if you are ivy user
-;;(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-;;(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-;;
-;;;; optionally if you want to use debugger
-;;(use-package dap-mode)
-;;;; (use-package dap-LANGUAGE) to load the dap adapter for your language
-;;
-;;;; optional if you want which-key integration
-;;(use-package which-key
-;;    :config
-;;    (which-key-mode))
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
 
-(use-package lsp-pyright
-  :ensure t 
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp)))) ;; or lsp-deferred
+;;(use-package lsp-treemacs
+;;  :after lsp)
+
+(use-package lsp-ivy)
+
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+ (setq which-key-idle-delay 1))
+
+;;(use-package lsp-pyright
+;;  :ensure t 
+;;  :hook (python-mode . (lambda ()
+;;                          (require 'lsp-pyright)
+;;                          (lsp)))) ;; or lsp-deferred
+
+(use-package python-mode
+  :mode "\\.py\\'"
+  :hook (python-mode . lsp-deferred)
+  :config
+  (setq python-indent-level 4))
+
+(use-package typescript-mode
+  :mode "\\.ts\\'"
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 2))
 
 (provide 'init) ; make (require 'init) happy

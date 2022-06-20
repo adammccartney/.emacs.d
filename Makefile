@@ -1,5 +1,5 @@
 SHELL := /usr/bin/bash
-EMACS   = emacs
+EMACS   = /usr/bin/emacs
 VERSION = $$($(EMACS) -Q -batch --eval '(princ emacs-version)')
 
 compile: init 

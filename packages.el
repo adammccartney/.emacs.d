@@ -41,8 +41,14 @@
   "f44f6c14500476d918e9c01de8449edb20af4113") ; 3.3.0
  ("lsp-mode" "https://github.com/emacs-lsp/lsp-mode"
   "5e0524cc9a4e21c4fe5b35153ad33e7b8a4f9117") ; 8.0.0
- ("lsp-pyright" "https://github.com/emacs-lsp/lsp-pyright"
-  "3598bc7c47c2f2ff6fc94ca50b5a4e4db4c25f97")) ; 0.2.0
+ ("lsp-ui" "https://github.com/emacs-lsp/lsp-ui"
+  "b625f3cb5e88559ab99bec58f7a14272edb296bc") ; 8.0.0
+ ("lsp-ivy" "https://github.com/emacs-lsp/lsp-ivy"
+  "3e87441a625d65ced5a208a0b0442d573596ffa3") ; 0.5
+ ("which-key" "https://github.com/justbur/emacs-which-key"
+  "1217db8c6356659e67b35dedd9f5f260c06f6e99") ; 3.6.0
+ ("typescript-mode" "https://github.com/emacs-typescript/typescript.el"
+  "b369d7d2518fa11760ac3908a383405350cd51d2")) ; 0.4
 
 ;; Set up some extra load-path directories
 (add-to-list 'load-path (gpkg-path "evil" "lib"))
