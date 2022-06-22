@@ -311,6 +311,7 @@
 (add-hook 'org-mode-hook '(lambda () (setq fill-column 72)))
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
+
 (use-package org 
   :init
   (setq org-todo-keywords
@@ -319,11 +320,18 @@
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t)))
+  ;; Capture templates
+  (setq org-capture-templates
+        '(("w" "Work Todo" entry (file+headline "~/Documents/org/Planner-mdw2022.org" "Tasks")
+           "* TODO %?\n %i\n %a")
+          ("h" "Home Todo" entry (file+headline "~/Documents/org/Planner-home2022.org" "Tasks")
+           "* TODO %?\n %i\n %a")))
   (setq org-startup-folded "overview"))
 
 (require 'org-tempo)
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
 (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
+(add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
 
@@ -479,8 +487,8 @@
   ("C-c p" . projectile-command-map)
   :init
   ;; NOTE: Set this to the folder where you keep your Git repos!
-  ;;(when (file-directory-p "~/.local/src")
-    ;;(setq projectile-project-search-path '("~/.local/src")))
+  (when (file-directory-p "~/.local/src")
+    (setq projectile-project-search-path '("~/.local/src" "~/Code" "~/.local/src/mdw")))
   (setq projectile-switch-project-action #'projectile-dired))
 
 (use-package counsel-projectile
