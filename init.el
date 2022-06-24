@@ -27,7 +27,7 @@
 (add-to-list 'load-path 
              (format "~/.emacs.d/site-lisp/%s/with-editor" emacs-version))
 (add-to-list 'load-path 
-             (format "~/.emacs.d/site-list/%s/magit/lisp" emacs-version))
+             (format "~/.emacs.d/site-lisp/%s/magit/lisp" emacs-version))
 
 (with-eval-after-load 'info
   (info-initialize)
@@ -308,18 +308,28 @@
 
 
 ;; Org mode
-(add-hook 'org-mode-hook '(lambda () (setq fill-column 72)))
-(add-hook 'org-mode-hook 'turn-on-auto-fill)
 
 
 (use-package org 
   :init
+  (add-hook 'org-mode-hook '(lambda () (setq fill-column 72)))
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+
+  (add-hook 'org-mode-hook
+            (lambda () (add-hook 'after-save-hook #'org-babel-tangle
+                                 :append :local)))
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+
+  ;; org babel
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-     (python . t)))
+     (python . t)
+     (shell . t)))
+
+  (push '("conf-unix" . conf-unix) org-src-lang-modes)
+  
   ;; Capture templates
   (setq org-capture-templates
         '(("w" "Work Todo" entry (file+headline "~/Documents/org/Planner-mdw2022.org" "Tasks")
@@ -544,5 +554,16 @@
   :hook (typescript-mode . lsp-deferred)
   :config
   (setq typescript-indent-level 2))
+
+(use-package geiser
+  :ensure t
+  :config
+  (setq geiser-default-implementation 'guile)
+  (setq geiser-active-implementations '(guile))
+  (setq geiser-implementations-alist '(((regexp "\\.scm$") guile)))
+  (setq geiser-guile-binary "/usr/bin/guile"))
+
+(use-package geiser-guile
+  :ensure t)
 
 (provide 'init) ; make (require 'init) happy

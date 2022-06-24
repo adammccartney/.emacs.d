@@ -49,6 +49,5 @@
   "1217db8c6356659e67b35dedd9f5f260c06f6e99") ; 3.6.0
  ("typescript-mode" "https://github.com/emacs-typescript/typescript.el"
   "b369d7d2518fa11760ac3908a383405350cd51d2")) ; 0.4
-
 ;; Set up some extra load-path directories
 (add-to-list 'load-path (gpkg-path "evil" "lib"))
